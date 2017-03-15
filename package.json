@@ -1,0 +1,21 @@
+{
+  "name": "noditor",
+  "version": "1.0.0",
+  "description": "Not production ready",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WyomingSoftware/noditor.git"
+  },
+  "keywords": [
+  ],
+  "author": "Warren Anderson <warren@wyomingsoftware.com> (http://www.wyomingsoftware.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WyomingSoftware/noditor/issues"
+  },
+  "homepage": "https://github.com/WyomingSoftware/noditor#readme"
+}
