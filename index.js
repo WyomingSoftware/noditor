@@ -12,7 +12,7 @@ const ERR = 'Noditor ERROR >';
  *
  * var noditor = require('../noditor');
  * noditor.start();
- * 
+ *
  * @param  {object} options
  * -- list of startup options --
  * stats_size:number      (optional: defaults 10)
@@ -76,21 +76,21 @@ Noditor.prototype.commands = function (req, res, next) {
       throw 'Invalid passcode';
     }
 
-    if(req.params.action === 'stats'){
+    if(req.params.command === 'stats'){
       res.send({"len":stats.get().length, 'stats':stats.get()});
       next();
     }
-    else if(req.params.action === 'top'){
+    else if(req.params.command === 'top'){
       // Return only the newest stat
       res.send({"stats":stats.get()[stats.get().length-1]});
       next();
     }
-    else if(req.params.action === 'stop'){
+    else if(req.params.command === 'stop'){
       stats.stop();
       res.send({"status":"OK"});
       next();
     }
-    else if(req.params.action === 'start'){
+    else if(req.params.command === 'start'){
       stats.start(req.params.options);
       res.send({"status":"OK"});
       next();
