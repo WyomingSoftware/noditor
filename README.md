@@ -88,17 +88,23 @@ Example projects have been created to show how to add the Noditor Node Module to
 
    [noditor-server-express](https://github.com/WyomingSoftware/noditor-server-express)
 
+   [Restify](http://www.restify.com/)
+
+   [Express](http://www.expressjs.com/)
+
 
 
 ## Noditor Mobile App Access
 The Noditor Mobile App can access the stats that the Noditor Node Module has gathered.
 To do so an endpoint (route) must be declared inside a Node.js App for the Noditor Mobile App to call.
 
-The following code has been verify to work with Restify and Express. Please open an issue if another
-framework does not work. Please note the ':' that trails the URI parameter.
+The following route has been verified to work with Restify and Express. Please open an issue if another
+framework does not work.
 
 ```
 server.get('/noditor/:passcode/:command', noditor.commands);
+// OR
+app.get('/noditor/:passcode/:command', noditor.commands);
 ```
 
 ## CURL
