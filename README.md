@@ -117,10 +117,13 @@ will need to place it here. If you did not then simply add a dummy string here a
 * stop- stops the Noditor Node Module on your server
 
 ```
-curl http://localhost:8080/noditor/my_path/my_passcode/stats
+curl http://localhost:8080/noditor/my_path/my_passcode/top
+
+// With JSON pretty print
+curl http://localhost:8080/noditor/my_path/my_passcode/top | python -m json.tool
 
 // With header details
-curl -i http://localhost:8080/noditor/my_path/my_passoce/stats
+curl -i http://localhost:8080/noditor/my_path/my_passoce/top
 ```
 
 
