@@ -66,7 +66,7 @@ Noditor.prototype.stop = function () {
  *
  * @param  {Object}   req  HTTP Request
  * @param  {Object}   res  HTTP Response
- * @param  {Function} next [description]
+ * @param  {Function} next 
  * @return {void}
  */
 Noditor.prototype.commands = function (req, res, next) {
@@ -77,12 +77,19 @@ Noditor.prototype.commands = function (req, res, next) {
     }
 
     if(req.params.command === 'stats'){
-      res.send({"len":stats.get().length, 'stats':stats.get()});
+      //res.send({"len":stats.get().length, 'stats':stats.get()});
+      res.send(stats.getStats());
       next();
     }
     else if(req.params.command === 'top'){
       // Return only the newest stat
-      res.send({"stats":stats.get()[stats.get().length-1]});
+      if(stats.isRunning())
+        res.send(stats.getTop());
+      else{
+        res.status(409, 'Noditor is not running');
+        res.send({});
+        next();
+      }
       next();
     }
     else if(req.params.command === 'stop'){
