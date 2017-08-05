@@ -1,6 +1,6 @@
 {
   "name": "noditor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Not production ready, please do not install.",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,13 @@
     "url": "git+https://github.com/WyomingSoftware/noditor.git"
   },
   "keywords": [
+    "monitor",
+    "stats",
+    "statistics",
+    "memory",
+    "cpu",
+    "V8",
+    "process"
   ],
   "author": "Warren Anderson <warren@wyomingsoftware.com> (http://www.wyomingsoftware.com)",
   "license": "ISC",
