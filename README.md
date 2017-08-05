@@ -1,9 +1,11 @@
-# Please do not install. Still a work in progress.
+# Still a work in progress (CURL works but Mobile App not ready).
 Installing the Noditor Node Module
-will only collect stats but access is only available using CURL. The Noditor Mobile Apps
+will collect stats but access is only available using CURL for now. The Noditor Mobile Apps
 is still under development. When completed you will be able to view the stats on an iOS or Android device.
 
-The module is published so that others may comment during development. Please open an issue on Github.
+The list of stats will continue to grow as Noditor moves forward.
+
+This module is published so that others may comment during development. Please open an issue on Github.
 
 ---
 
