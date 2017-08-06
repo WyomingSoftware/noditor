@@ -138,10 +138,10 @@ of the URL.
 **:path** > This is a placeholder for your load balancer to use and direct the URL to the
 proper server. It is ignored by the Noditor Node Module. If you are not directing the URL in a load balancer simply put a dummy value here.
 
-**www.my_domain.com/bear/my_passcode/top** -
+`www.my_domain.com/bear/my_passcode/top` -
 The value **bear** as the first parameter in the URL could be used by a load balancer to direct the call to a specific server.
 
-**www.my_domain.com/none/my_passcode/top** -
+`www.my_domain.com/none/my_passcode/top` -
 Here the load balancer would not route the call to a specific server but rather go to
 its normal routing pattern because it does not recognize the word **none**.
 
@@ -155,7 +155,3 @@ Example projects have been created to show how to add the Noditor Node Module to
    [noditor-server-restify](https://github.com/WyomingSoftware/noditor-server-restify)
 
    [noditor-server-express](https://github.com/WyomingSoftware/noditor-server-express)
-
-   [Restify](http://www.restify.com/)
-
-   [Express](http://www.expressjs.com/)
