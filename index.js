@@ -4,6 +4,7 @@ var Noditor = function () {};
 var quiet = true;
 var passcode = null;
 const ERR = 'Noditor ERROR >';
+const PAUSED = 'Noditor has been paused';
 
 
 /**
@@ -66,7 +67,7 @@ Noditor.prototype.stop = function () {
  *
  * @param  {Object}   req  HTTP Request
  * @param  {Object}   res  HTTP Response
- * @param  {Function} next 
+ * @param  {Function} next
  * @return {void}
  */
 Noditor.prototype.commands = function (req, res, next) {
@@ -77,18 +78,23 @@ Noditor.prototype.commands = function (req, res, next) {
     }
 
     if(req.params.command === 'stats'){
-      //res.send({"len":stats.get().length, 'stats':stats.get()});
-      res.send(stats.getStats());
+      console.log(req.params);
+      if(stats.isRunning()){
+        res.send(stats.getStats());
+      }
+      else{
+        res.status(409, PAUSED);
+        res.send({status:PAUSED});
+      }
       next();
     }
     else if(req.params.command === 'top'){
-      // Return only the newest stat
-      if(stats.isRunning())
+      if(stats.isRunning()){
         res.send(stats.getTop());
+      }
       else{
-        res.status(409, 'Noditor is not running');
-        res.send({});
-        next();
+        res.status(409, PAUSED);
+        res.send({status:PAUSED});
       }
       next();
     }
@@ -98,20 +104,21 @@ Noditor.prototype.commands = function (req, res, next) {
       next();
     }
     else if(req.params.command === 'start'){
+      if(stats.isRunning()){
+        stats.stop();
+      }
       stats.start(req.params.options);
       res.send({"status":"OK"});
       next();
     }
     else {
-      res.status(500);
-      res.send({"status":"Bad Command"});
-      next();
+      throw 'Bad Command';
     }
   }
   catch(err){
     if(!quiet) console.log(ERR, 'Noditor.commands', err);
     res.status(500);
-    res.send(err);
+    res.send({status:err});
     next();
   }
 };
