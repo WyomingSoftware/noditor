@@ -56,9 +56,11 @@ Noditor.prototype.stop = function () {
 
 
 /**
- * Function to attach to a /noditor/: endpoint by a host Node.js App. Looks for
+ * Function to attach to the /noditor/:path/:passcode/:command endpoint 
+ * by a host Node.js App. Looks for
  * certain query parameters attached to the request to process.
  *
+ * path => Ignored by Noditor, useful for load balancers.
  * passcode => Required if the Noditor Node Module was started with a passcode.
  * stats => Will return the stats array
  * top => Will return the last stat from the stats array
@@ -76,9 +78,7 @@ Noditor.prototype.commands = function (req, res, next) {
     if(passcode && req.params.passcode !== passcode){
       throw 'Invalid passcode';
     }
-
     if(req.params.command === 'stats'){
-      console.log(req.params);
       if(stats.isRunning()){
         res.send(stats.getStats());
       }
@@ -93,7 +93,7 @@ Noditor.prototype.commands = function (req, res, next) {
         res.send(stats.getTop());
       }
       else{
-        res.status(409, PAUSED);
+        res.status(409);
         res.send({status:PAUSED});
       }
       next();
