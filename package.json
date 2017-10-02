@@ -1,7 +1,7 @@
 {
   "name": "noditor",
-  "version": "1.0.4",
-  "description": "Not production ready, please do not install.",
+  "version": "1.0.5",
+  "description": "A simple Nodejs monitor.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,9 +17,10 @@
     "memory",
     "cpu",
     "V8",
-    "process"
+    "process",
+    "noditor"
   ],
-  "author": "Warren Anderson <warren@wyomingsoftware.com> (http://www.wyomingsoftware.com)",
+  "author": "Warren Anderson <warren@wyomingsoftware.com> (https://github.com/WyomingSoftware)",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/WyomingSoftware/noditor/issues"
