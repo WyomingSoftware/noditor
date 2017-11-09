@@ -1,6 +1,6 @@
 {
   "name": "noditor",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A simple Nodejs monitor.",
   "main": "index.js",
   "scripts": {
