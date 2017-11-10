@@ -56,7 +56,7 @@ Noditor.prototype.stop = function () {
 
 
 /**
- * Function to attach to the /noditor/:path/:passcode/:command endpoint 
+ * Function to attach to the /noditor/:path/:passcode/:command endpoint
  * by a host Node.js App. Looks for
  * certain query parameters attached to the request to process.
  *
@@ -76,15 +76,18 @@ Noditor.prototype.commands = function (req, res, next) {
   try{
     // Check for passcode
     if(passcode && req.params.passcode !== passcode){
-      throw 'Invalid passcode';
+      res.status(403);
+      res.send({why:'Incorrect passcode'});
+      next();
+      return;
     }
     if(req.params.command === 'stats'){
       if(stats.isRunning()){
         res.send(stats.getStats());
       }
       else{
-        res.status(409, PAUSED);
-        res.send({status:PAUSED});
+        res.status(409);
+        res.send({why:PAUSED});
       }
       next();
     }
@@ -94,7 +97,7 @@ Noditor.prototype.commands = function (req, res, next) {
       }
       else{
         res.status(409);
-        res.send({status:PAUSED});
+        res.send({why:PAUSED});
       }
       next();
     }
@@ -112,13 +115,13 @@ Noditor.prototype.commands = function (req, res, next) {
       next();
     }
     else {
-      throw 'Bad Command';
+      throw 'Bad Command: try (top stats start stop)';
     }
   }
   catch(err){
     if(!quiet) console.log(ERR, 'Noditor.commands', err);
     res.status(500);
-    res.send({status:err});
+    res.send({why:err});
     next();
   }
 };
