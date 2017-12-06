@@ -5,13 +5,13 @@ There are three components to Noditor as a monitoring system.
 * **Noditor Module** (Stats collection node_module for your app)
 * **Noditor Mobile App** (iOS and Android app to display stats)
 
-Your **Node.js** App will host the Noditor Module to collect stats.
+Your **Node.js App** will host the Noditor Module to collect stats.
 
 The **Noditor Module** is simple by design and places very little overhead on a host Node.js App.
 It uses just a tiny amount of memory and CPU usage is nearly undetectable. The Noditor Module gathers stats and
-serves the data to the Noditor Mobile App, CURL and other HTTP requests upon request. It retains a small set of data inside a Node.js App. The size of the data retained can be altered.
+serves the data to the Noditor Mobile App, CURL and other HTTP requests. It retains a small set of data inside a Node.js App. The size of the data retained can be altered.
 
-The **Noditor Mobile** App accesses the stats gathered by the Noditor Module.
+The **Noditor Mobile App** accesses the stats gathered by the Noditor Module.
 
 Noditor as a monitoring system is not a replacement for the big boy monitors
 but it does not overwhelm a Node.js App like they do.
@@ -83,7 +83,7 @@ App. The default size of the array is 10 rows. This array of stats is then deliv
 
 * **stats_frequency:** (number) Defaults to 15. The frequency in seconds that stats are collected. This value cannot be less than 5 seconds.
 
-* **passcode:** (string) Defaults to null. Adds a passcode to protect the /noditor/:path/:passcode/:command endpoint (route). There is no private data that the Noditor Module collects. Passcode protection is optional. If a passcode is used then be sure the Node.js App uses SSL for at least the /noditor/:path/:passcode/:command endpoint. Self-signed certs will not work with the Noditor Mobile App. Use http rather than https in development when using a self-signed cert.
+* **passcode:** (string) Defaults to null. Adds a passcode to protect the /noditor/:path/:passcode/:command endpoint (route). There is no private data that the Noditor Module collects. Passcode protection is optional. If a passcode is used then be sure the Node.js App uses SSL for at least the /noditor/:path/:passcode/:command endpoint. Self-signed certs will not work with the Noditor Mobile App. Use http when using a self-signed cert if the Noditor Mobile App is used. This is usually the case in development and is not recommended for production.
 
 * **quiet:** (boolean) Defaults to true. The Noditor Module swallows any errors it encounters. Setting the
 quiet parameter to false would output errors to console along with a few operational messages such as start
@@ -93,8 +93,7 @@ and stop.
 If the Stats Collection (stats_size) is 10 rows and the Stats Frequency (stats_frequency)
 is 15 seconds then there will be 150 seconds of stats
 to draw memory and other charts at 15 minute increments up to 2.5 minutes. Adjust the options to get the
-charts needed. The stats_size and stats_frequency parameters can also be adjusted at runtime using the Noditor
-Mobile App.
+charts needed.
 
 
 
@@ -129,23 +128,25 @@ There are three required values to be passed in the URL.
 
 **:path** > This is a placeholder for your load balancer to use and direct the URL to the
 proper server. It is ignored by the Noditor Module. If you are not directing the URL with a
-load balancer simply put a dummy value here or leave the value null.
+load balancer simply put a dummy value here.
 ```bash
-# dummy value
+# bear is used by the load balancer to direct the endpoint call
+curl -k https://www.my_domain.com/noditor/bear/my_passcode/top
+
+# none is used as a dummy value since the load balancer does not look at the endpoint call
 curl -k https://www.my_domain.com/noditor/none/my_passcode/top
 
-# null value
-curl -k https://www.my_domain.com/noditor//my_passcode/top
 ```
 
 **:passcode** > If you started the Noditor Module with a passcode you
-will need to place it here. If you did not then simply use a dummy string or null value as it will be ignored by Noditor.
+will need to place it here. If you did not then simply use a dummy string as it will be ignored by Noditor.
 ```bash
-# dummy value
+# push123_code was used to start noditor and must be passed as the passcode
+curl -k https://www.my_domain.com/noditor/my_path/push123_code/top
+
+# none is used as a dummy value since noditor was not started with a passcode and will ignore the passcode
 curl -k https://www.my_domain.com/noditor/my_path/none/top
 
-# null value
-curl -k https://www.my_domain.com/noditor/my_path//top
 ```
 
 **:command** > (stats, top, start, stop)
@@ -154,7 +155,7 @@ curl -k https://www.my_domain.com/noditor/my_path//top
 * start - begins the collection of stats by the Noditor Module
 * stop - halts the collection of stats by the Noditor Module
 
-##### Full CURL examples:
+**Full CURL examples:**
 ```bash
 curl http://www.my_domain.com/noditor/my_path/my_passcode/top
 
@@ -177,23 +178,27 @@ curl -v -k https://www.my_domain.com/noditor/my_path/my_passocode/top
 Node.js Apps that are load balanced between more than one server require special attention
 if access is required via the Internet from the Noditor Mobile App. Use the :path
 (first) parameter of the URL as a tag that the load balancer can use to direct the
-inbound call. The :path is the first parameter of the URL.
+inbound call. The :path is the first parameter of the URL (/noditor/:path/:passcode/:command).
 
 **:path** > This is a placeholder for your load balancer to use and direct the URL to the
 proper server. It is ignored by the Noditor Module. If you are not directing the URL with a
-load balancer use a dummy or a null value.
+load balancer use a dummy value.
 
 The value bear as the first parameter in the URL could be used by a load
 balancer to direct the call to a specific server.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*www.my_domain.com/bear/my_passcode/top*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*www.my_domain.com/noditor/bear/my_passcode/top*
 
-Here the load balancer would not route the call to a specific server but rather go to its normal routing pattern because it does not recognize the word none in the first example or the null value in the second example.
+If the load balancer is not examining the URL for routing purposes simply use any value
+for the path parameter. Here the word none is used.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*www.my_domain.com/none/my_passcode/top*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*www.my_domain.com/noditor/none/my_passcode/top*
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*www.my_domain.com//my_passcode/top*
 
+
+## CORS
+Most likely you already have CORS implemented in your Node.js App. You may or may not
+need to use CORS based on your project's specific environment.
 
 
 ## Example Node.js App Projects
@@ -202,3 +207,8 @@ Example projects have been created to show how to add the Noditor Module to your
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[noditor-server-restify](https://github.com/WyomingSoftware/noditor-server-restify)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[noditor-server-express](https://github.com/WyomingSoftware/noditor-server-express)
+
+This project is the actual Node.js App used for the demo servers in the Noditor Mobile App. It does use
+CORS.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[noditor-server-demo](https://github.com/WyomingSoftware/noditor-server-demo)
