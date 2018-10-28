@@ -1,3 +1,5 @@
+# This repo is now deprecated. No further development is planned. The apps have been removed from the app stores.
+---
 ## Noditor Monitoring System
 There are three components to Noditor as a monitoring system.
 
